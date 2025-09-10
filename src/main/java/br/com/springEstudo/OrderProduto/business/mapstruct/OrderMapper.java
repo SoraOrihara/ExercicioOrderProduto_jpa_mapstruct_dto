@@ -21,7 +21,6 @@ public interface OrderMapper {
 	@Mapping(target="itens",ignore=true)
 	OrderEntity paraOrderEntity(OrderRequestDto request);
 	
-	
 	OrderResponseDto paraOrderResponseDto(OrderEntity entity);
 	
 	List<OrderResponseDto> paraListaOrderResponseDto(List<OrderEntity> entity);
