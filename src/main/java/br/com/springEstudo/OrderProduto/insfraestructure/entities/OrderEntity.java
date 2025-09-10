@@ -5,17 +5,17 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import org.springframework.stereotype.Service;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Service
+@Entity
 @Table(name ="tb_order")
 public class OrderEntity extends Auditable implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -29,12 +29,14 @@ public class OrderEntity extends Auditable implements Serializable {
 	
 	private Double totalAmount;
 	
+	@Column(nullable=false)
 	private OrderStatus status;
 	
 	private String shipping_adress;
 	
 	private String billing_adress;
 	
+	@Column(nullable=false)
 	private PaymentMethod payment_method;
 	
 	

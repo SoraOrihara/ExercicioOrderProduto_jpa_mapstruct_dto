@@ -3,39 +3,45 @@ package br.com.springEstudo.OrderProduto.insfraestructure.entities;
 import java.io.Serializable;
 import java.util.UUID;
 
-import org.springframework.stereotype.Service;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Service
-@Table(name="tb_produto")
+@Entity
+@Table(name = "tb_produto")
 public class ProdutoEntity extends Auditable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	
+
+	@Column(unique = true, nullable = false)
 	private String nome;
-	
+
 	private String descricao;
 	
+	@Column(nullable=false)
+	private Integer estoque;
+
+	@Column(nullable = false)
 	private Double price;
-	
+
+	@Column(nullable = false)
 	private String category;
 
 	public ProdutoEntity() {
 		super();
 	}
 
-	public ProdutoEntity(String nome, String descricao, Double price, String category) {
+	public ProdutoEntity(String nome, String descricao, Integer estoque, Double price, String category) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
+		this.estoque = estoque;
 		this.price = price;
 		this.category = category;
 	}
@@ -75,8 +81,13 @@ public class ProdutoEntity extends Auditable implements Serializable {
 	public UUID getId() {
 		return id;
 	}
-	
-	
-	
-	
+
+	public Integer getEstoque() {
+		return estoque;
+	}
+
+	public void setEstoque(Integer estoque) {
+		this.estoque = estoque;
+	}
+
 }
