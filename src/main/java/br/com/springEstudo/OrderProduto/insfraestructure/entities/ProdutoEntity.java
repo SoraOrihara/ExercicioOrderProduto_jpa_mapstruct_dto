@@ -19,7 +19,7 @@ public class ProdutoEntity extends Auditable implements Serializable {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(unique = true, nullable = false)
+	@Column(nullable = false)
 	private String nome;
 
 	private String descricao;

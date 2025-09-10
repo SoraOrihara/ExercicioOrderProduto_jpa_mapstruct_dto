@@ -1,10 +1,9 @@
 package br.com.springEstudo.OrderProduto.insfraestructure.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -39,9 +38,8 @@ public class OrderEntity extends Auditable implements Serializable {
 	@Column(nullable=false)
 	private PaymentMethod payment_method;
 	
-	
 	@OneToMany(mappedBy = "order",cascade=CascadeType.ALL,orphanRemoval = true)
-	private Set<OrderItemEntity> orderItens = new HashSet<>();
+	private	List<OrderItemEntity> itens = new ArrayList<>();
 
 
 	public OrderEntity() {
@@ -50,7 +48,7 @@ public class OrderEntity extends Auditable implements Serializable {
 
 
 	public OrderEntity(String customer, Double totalAmount, OrderStatus status, String shipping_adress,
-			String billing_adress, PaymentMethod payment_method, Set<OrderItemEntity> orderItens) {
+			String billing_adress, PaymentMethod payment_method, List<OrderItemEntity> itens) {
 		super();
 		this.customer = customer;
 		this.totalAmount = totalAmount;
@@ -58,7 +56,7 @@ public class OrderEntity extends Auditable implements Serializable {
 		this.shipping_adress = shipping_adress;
 		this.billing_adress = billing_adress;
 		this.payment_method = payment_method;
-		this.orderItens = orderItens;
+		this.itens = itens;
 	}
 
 
@@ -122,13 +120,13 @@ public class OrderEntity extends Auditable implements Serializable {
 	}
 
 
-	public Set<OrderItemEntity> getOrderItens() {
-		return orderItens;
+	public List<OrderItemEntity> getItens() {
+		return itens;
 	}
 
 
-	public void setOrderItens(Set<OrderItemEntity> orderItens) {
-		this.orderItens = orderItens;
+	public void setItens(List<OrderItemEntity> itens) {
+		this.itens = itens;
 	}
 
 
