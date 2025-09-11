@@ -10,7 +10,7 @@ import br.com.springEstudo.OrderProduto.business.dto.OrderRequestDto;
 import br.com.springEstudo.OrderProduto.business.dto.OrderResponseDto;
 import br.com.springEstudo.OrderProduto.insfraestructure.entities.OrderEntity;
 
-@Mapper(componentModel = "sping", uses = {OrderItemMapper.class})
+@Mapper(componentModel = "spring", uses = {OrderItemMapper.class})
 public interface OrderMapper {
 
 	@Mapping(target = "id", ignore = true)

@@ -10,7 +10,7 @@ import br.com.springEstudo.OrderProduto.business.dto.ProdutoRequestDto;
 import br.com.springEstudo.OrderProduto.business.dto.ProdutoResponseDto;
 import br.com.springEstudo.OrderProduto.insfraestructure.entities.ProdutoEntity;
 
-@Mapper(componentModel = "string")
+@Mapper(componentModel = "spring")
 public interface ProdutoMapper {
 	
 	@Mapping(target = "createdAt", ignore = true)

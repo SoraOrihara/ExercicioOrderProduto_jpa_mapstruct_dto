@@ -35,24 +35,45 @@ public class OrderItemService {
 	}
 
 	@Transactional
-	public OrderItemEntity create(OrderItemRequestDto itemDto, OrderEntity order) {
+	protected OrderItemEntity create(OrderItemRequestDto itemDto, OrderEntity order) {
 
 		// 1. Usa o mapeador para criar a entidade e busca o produto
-		OrderItemEntity item = orderItemMapper.paraOrderItemEntity(itemDto);
+		OrderItemEntity itemid = orderItemMapper.paraOrderItemEntity(itemDto);
 
 		ProdutoEntity produto = produtoRepository.findById(itemDto.produtoId())
 				.orElseThrow(() -> new ResourceNotFoundException("Id não encontrado: " + itemDto.produtoId()));
 
 		// 2. Associa a entidade ao pedido e ao produto
-		item.setOrder(order);
-		item.setProduto(produto);
-
+		itemid.setOrder(order);
+		itemid.setProduto(produto);
 		// 3. Define o preço de venda e salva
-		item.setPriceAtSale(produto.getPrice());
+		itemid.setPriceAtSale(produto.getPrice());
+		
+		order.getItens().add(itemid);
+		 // 4. Recalcula o valor total do pedido com o novo item
+        double newTotal = order.getItens().stream()
+                .mapToDouble(item -> item.getPriceAtSale() * item.getQuantity())
+                .sum();
+        
+        // 5. Atualiza o total e salva o pedido pai
+        order.setTotalAmount(newTotal);
+        orderRepository.save(order);
 
-		return orderItemRepository.save(item);
+
+		return itemid;
 	}
+	 // Novo método que o controller irá chamar
+    @Transactional
+    public OrderItemResponseDto createOrderItem(UUID orderId, OrderItemRequestDto requestDto) {
+        // Busca o pedido pai
+        OrderEntity order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado com o ID: " + orderId));
 
+        // Chama o método de criação para criar o item
+        OrderItemEntity createdItem = create(requestDto, order);
+        
+        return orderItemMapper.paraOrderItemResponseDto(createdItem);
+    }
 	@Transactional
 	public List<OrderItemResponseDto> findAllByOrderId(UUID orderId) {
 		OrderEntity order = orderRepository.findById(orderId)
@@ -110,12 +131,13 @@ public class OrderItemService {
 		if (!orderItem.getOrder().getId().equals(orderId)) {
 			throw new IllegalArgumentException("O item não pertence a este pedido.");
 		}
-
-		// Deleta o item do repositório
-		orderItemRepository.delete(orderItem);
-
-		// Recalcula o total do pedido principal
+		
 		OrderEntity order = orderItem.getOrder();
+		order.getItens().remove(orderItem);
+		orderItemRepository.deleteById(itemId);
+
+		
+		// Recalcula o total do pedido principal
 		double newTotal = 0.0;
 		for (OrderItemEntity item : order.getItens()) {
 			newTotal += item.getPriceAtSale() * item.getQuantity();
