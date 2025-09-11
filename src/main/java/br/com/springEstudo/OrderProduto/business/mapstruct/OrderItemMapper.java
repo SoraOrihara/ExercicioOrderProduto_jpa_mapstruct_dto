@@ -1,5 +1,7 @@
 package br.com.springEstudo.OrderProduto.business.mapstruct;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -23,6 +25,11 @@ public interface OrderItemMapper {
     @Mapping(source = "produto.nome", target = "produtoNome")
 	OrderItemResponseDto paraOrderItemResponseDto(OrderItemEntity entity);
 	
+    @Mapping(source = "produto.id", target = "produtoId")
+    @Mapping(source = "produto.nome", target = "produtoNome")
+	List<OrderItemResponseDto> paraListOrderItemResponseDto(List<OrderItemEntity> entity);
+    
+    
     @Mapping(target = "id", ignore = true) // O ID é gerado pelo servidor
     @Mapping(target = "order", ignore = true) // A entidade Order é setada pelo serviço
     @Mapping(target = "produto", ignore = true) // A entidade Produto é setada pelo serviço
