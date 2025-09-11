@@ -1,5 +1,7 @@
 package br.com.springEstudo.OrderProduto.business.mapstruct;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -16,6 +18,8 @@ public interface ProdutoMapper {
 	ProdutoEntity paraProdutoEntity (ProdutoRequestDto request);
 	
 	ProdutoResponseDto paraProdutoResponseDto(ProdutoEntity entity);
+	
+	List<ProdutoResponseDto> paraListProdutoResponseDto(List<ProdutoEntity> entity);
 	
 	@Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
